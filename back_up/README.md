@@ -28,7 +28,7 @@
 
 デモ動画  
 
-![Demo](./assets/old_quiz_demo.gif)  
+![Demo](../assets/old_quiz_demo.gif)  
 
 2026/06/29 ` 16_quiz_hold_judgement.py` に15から機能を加え，クイズモードの大枠が完成しました．主な変更内容は以下の通りです．   
 ・不正解数表示  
