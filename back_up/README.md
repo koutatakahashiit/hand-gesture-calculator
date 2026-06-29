@@ -27,8 +27,9 @@
 2026/06/29 ` 15_quiz_only_correct.py` に正解判定のみを行うプロトタイプクイズモードを実装しました．cキーでクイズモードをオンにします．  
 
 デモ動画  
-
-![Demo](../assets/old_quiz_demo.gif)  
+<p align="center">
+  <img src="../assets/old_quiz_demo.gif" width="60%">
+</p>
 
 2026/06/29 ` 16_quiz_hold_judgement.py` に15から機能を加え，クイズモードの大枠が完成しました．主な変更内容は以下の通りです．   
 ・不正解数表示  
