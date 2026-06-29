@@ -9,7 +9,7 @@ MediaPipeで手の21点ランドマークを取得し，手首を基準に正規
 ※デモ用に文字を大きくしています．演算子選択はキーボードで行っています．
 
 <p align="center">
-  <img src="![Demo](assets/demo.gif)" width="60%">
+  <img src="assets/demo.gif" width="60%">
 </p>
 
 
