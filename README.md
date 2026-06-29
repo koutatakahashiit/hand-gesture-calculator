@@ -86,6 +86,14 @@ models/finger_mlp_model.pth
 ・6クラス分類より指ごとの5つの二値分類に変更  
 ・2進数入力モード  
 ・クイズモードの実装  
+back_upフォルダにあります．大枠は完成しました．
+
+デモ動画
+<p align="center">
+  <img src="assets/quiz_demo.gif" width="60%">
+</p>
+
+
 ・UIの改善  
 
 ・LightGBMなどを用いたアンサンブル  
