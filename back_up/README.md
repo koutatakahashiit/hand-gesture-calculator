@@ -38,4 +38,7 @@
 ・前フレームとの差分確認  
 
 デモ動画
-![Demo](../assets/quiz_demo.gif) ![Demo](../assets/quiz_score_demo.gif)  
+<p align="center">
+  <img src="../assets/quiz_demo.gif" width="45%">
+  <img src="../assets/quiz_score_demo.gif" width="45%">
+</p>
