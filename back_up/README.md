@@ -20,6 +20,7 @@
 14. 四則演算への拡張(現在)
 15. クイズモードの試作
 16. クイズモードの大枠の完成
+17. 指ごとの5つの二値分類の実装
 
 `14_def_calc_quiz.py` は，ジェスチャーで計算問題に答えるクイズモードを作るための試作コードです．
 
@@ -43,3 +44,4 @@
   <img src="../assets/quiz_demo.gif" width="45%">
   <img src="../assets/quiz_score_demo.gif" width="45%">
 </p>
+
