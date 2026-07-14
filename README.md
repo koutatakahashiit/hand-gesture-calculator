@@ -91,7 +91,7 @@ back_upフォルダにあります．大枠は完成しました．
 
 デモ動画
 <p align="center">
-  <img src="assets/quiz_demo.gif" width="60%">
+  <img src="assets/quiz_mode.gif" width="60%">
 </p>
 
 
