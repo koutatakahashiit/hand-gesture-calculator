@@ -7,7 +7,7 @@ import os #保存先フォルダの作成とファイル存在確認に用いる
 
 DEVICE = 0 #使用するカメラ番号．通常は最初に認識されたカメラが0になる
 
-CSV_PATH = "data/finger_landmarks.csv" #学習データの保存先
+CSV_PATH = "data/hand_landmarks_and_states.csv" #学習データの保存先
 MODEL_PATH = "models/hand_landmarker.task" #手検出モデルファイルのパス
 
 FINGER_TIP_INDICES = [4, 8, 12, 16, 20] #指先のランドマーク番号
@@ -55,7 +55,7 @@ def convert_handedness_for_flipped_image(handedness):
     return handedness
 
 #学習データをCSVに保存する関数
-def save_sample(csv_path, label, handedness, features):
+def save_sample(csv_path, labels, handedness, features):
     #最初に列名を記載するため，CSVファイルが存在するかを確認する．
     file_exists = os.path.exists(csv_path)
 
@@ -64,14 +64,14 @@ def save_sample(csv_path, label, handedness, features):
 
         #CSVファイルが存在しない場合は，最初に列名を書き込む
         if not file_exists:
-            header = ["label", "hand"]
+            header = ["hand", "thumb_label", "index_finger_label", "middle_finger_label", "ring_finger_label", "pinky_label"]
             for i in range(21):
                 header += [f"x{i}", f"y{i}", f"z{i}"]
             writer.writerow(header)
 
         #画面反転後の表示上の左右に合わせる(自分から見て右手ならcsvにrightと記載する)
         display_hand = convert_handedness_for_flipped_image(handedness)
-        sample = [label, display_hand] + features
+        sample = [display_hand] + labels[:5] + features
         writer.writerow(sample)
     return sample
 
@@ -126,7 +126,7 @@ def draw_status_text(frame, saved_count, detected_hand_count):
 
     cv2.putText(
         frame,
-        "0-5 to save / q to quit",
+        "s to save / q to quit",
         (20, 40),
         cv2.FONT_HERSHEY_SIMPLEX,
         0.8,
@@ -165,6 +165,12 @@ def draw_status_text(frame, saved_count, detected_hand_count):
 def main():
     #CSVに保存した件数
     saved_count = 0
+
+    t = 0
+    i = 0
+    m = 0
+    r = 0
+    p = 0
 
     options = HandLandmarkerOptions( #手検出器の設定
         base_options=BaseOptions(model_asset_path=MODEL_PATH), #モデルファイル
@@ -209,16 +215,74 @@ def main():
                 draw_hand(frame, hand_landmarks, connections, width, height)
 
         draw_status_text(frame, saved_count, detected_hand_count)
-        cv2.imshow("camera", frame)
+
 
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
             break
 
-        #0から5のキーが押された場合，現在映っている手をそのラベルとして保存する
-        if ord("0") <= key <= ord("5"):
-            label = key - ord("0")
+        # それぞれの指のキーが押された場合，現在の値を反転させる
+        if key == ord("1"):
+            t = 1 if t == 0 else 0
+        if key == ord("2"):
+            i = 1 if i == 0 else 0
+        if key == ord("3"):
+            m = 1 if m == 0 else 0
+        if key == ord("4"):
+            r = 1 if r == 0 else 0
+        if key == ord("5"):
+            p = 1 if p == 0 else 0
 
+        cv2.putText(
+            frame,
+            f"thumb: {t}",
+            (int(width * 0.67), 40),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.8,
+            (0,0,0),
+            2
+        )
+        cv2.putText(
+            frame,
+            f"index finger: {i}",
+            (int(width * 0.67), 80),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.8,
+            (0,0,0),
+            2
+        )
+        cv2.putText(
+            frame,
+            f"middle finger: {m}",
+            (int(width * 0.67), 120),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.8,
+            (0,0,0),
+            2
+        )
+        cv2.putText(
+            frame,
+            f"ring finger: {r}",
+            (int(width * 0.67), 160),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.8,
+            (0,0,0),
+            2
+        )
+        cv2.putText(
+            frame,
+            f"pinky: {p}",
+            (int(width * 0.67), 200),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.8,
+            (0,0,0),
+            2
+        )
+
+
+        cv2.imshow("camera", frame)
+        if key == ord("s"):
+            labels = [t,i,m,r,p]
             #学習データは片手ずつ保存するため，手が検出されており，かつ手が1つだけ映っている場合のみ保存する
             if hands.hand_landmarks and len(hands.hand_landmarks) == 1:
                 hand_landmarks = hands.hand_landmarks[0]
@@ -226,7 +290,7 @@ def main():
                 features = landmarks_to_features(hand_landmarks)
 
                 if features is not None:
-                    sample = save_sample(CSV_PATH, label, handedness, features)
+                    sample = save_sample(CSV_PATH, labels, handedness, features)
                     saved_count += 1
                     print(f"Saved: {sample}\n")
 
